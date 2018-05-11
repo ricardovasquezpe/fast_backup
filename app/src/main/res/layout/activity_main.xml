@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_cont_fm_apps_act_main"
+            android:fillViewport="true">
+
+            <fragment
+                android:id="@+id/fm_apps_act_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name = "com.fastbackup.fastbackup.fast_backup.fragments.AppsFragment"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_cont_fm_new_apps_act_main"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <fragment
+                android:id="@+id/fm_new_apps_act_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name = "com.fastbackup.fastbackup.fast_backup.fragments.NewAppsFragment"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_cont_fm_settings_act_main"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <fragment
+                android:id="@+id/fm_settings_act_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name = "com.fastbackup.fastbackup.fast_backup.fragments.SettingsFragment"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/ll_apps_menu_act_main">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_apps_white_24dp"
+                android:tint="@color/colorPersianGreen"
+                android:id="@+id/iv_apps_menu_act_main" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Installed Apps"
+                android:textColor="@color/colorPersianGreen"
+                android:textSize="11dp"
+                android:id="@+id/tv_apps_menu_act_main" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/ll_new_apps_menu_act_main">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_find_in_page_white_24dp"
+                android:tint="@color/colorSilver"
+                android:id="@+id/iv_new_apps_menu_act_main" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search Apps"
+                android:textSize="11dp"
+                android:id="@+id/tv_new_apps_menu_act_main" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/ll_settings_menu_act_main">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_settings_white_24dp"
+                android:tint="@color/colorSilver"
+                android:id="@+id/iv_settings_menu_act_main"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textSize="11dp"
+                android:id="@+id/tv_settings_menu_act_main" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

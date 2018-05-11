@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#405064</color>
+    <color name="colorPrimaryDark">#405064</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorFiord">#405064</color>
+    <color name="colorShuttleGray">#536173</color>
+    <color name="colorDoveGray">#717171</color>
+    <color name="colorSilver">#CBCBCB</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorPersianGreen">#009a9a</color>
+    <color name="colorPomegranate">#F44336</color>
+    <color name="colorRegentGray">#86909d</color>
+</resources>
