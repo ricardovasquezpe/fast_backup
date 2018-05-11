@@ -35,7 +35,7 @@ public class NewAppsFragment extends Fragment {
 
     UserSessionManager session;
 
-    private List<App> currentSelectedApps;
+    List<App> currentSelectedApps;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

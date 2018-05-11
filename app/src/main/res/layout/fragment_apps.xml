@@ -21,4 +21,19 @@
 
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_below="@+id/rl_title_act_main">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_saved_apps_fm_apps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_below="@+id/rl_title_act_main"/>
+
+    </ScrollView>
+
 </RelativeLayout>

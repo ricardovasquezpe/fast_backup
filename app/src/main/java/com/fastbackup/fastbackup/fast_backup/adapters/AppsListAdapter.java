@@ -14,7 +14,6 @@ import com.fastbackup.fastbackup.fast_backup.data.models.App;
 import java.util.List;
 
 public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.ViewHolder>{
-
     private final List<App> data;
     private Context context;
     private OnItemCheckListener onItemCheckListener;
