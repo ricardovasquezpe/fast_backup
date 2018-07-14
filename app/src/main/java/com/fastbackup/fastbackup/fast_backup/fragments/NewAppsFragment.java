@@ -19,23 +19,33 @@ import com.fastbackup.fastbackup.fast_backup.data.models.SavedApp;
 import com.fastbackup.fastbackup.fast_backup.helpers.UserSessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class NewAppsFragment extends Fragment {
+public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
     RecyclerView rv_apps;
     AppsListAdapter da_apps;
     List<App> appsList;
-    TextView test;
+    TextView save_refresh;
 
     UserSessionManager session;
 
     List<App> currentSelectedApps;
+
+    static AppsFragmentView appsFragmentView;
+
+    static String log = "FASTBACKUP";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    public static void newInstance(AppsFragment fragment) {
+        appsFragmentView = fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,21 +70,33 @@ public class NewAppsFragment extends Fragment {
         rv_apps.setAdapter(da_apps);
         getInstalledApps();
 
-        test.setOnClickListener(new View.OnClickListener() {
+        save_refresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                List<SavedApp> newApps = getListSavedAppsFromSession();
-                session.deleteSessionApp();
+                if(save_refresh.getText().toString().toLowerCase().equals("save")){
+                    List<SavedApp> newApps = getListSavedAppsFromSession();
+                    session.deleteSessionApp();
 
-                for (App app : currentSelectedApps){
-                    SavedApp sapp = new SavedApp();
-                    sapp.setName(app.getName());
-                    sapp.setPath(app.getPath());
-                    newApps.add(sapp);
+                    for (App app : currentSelectedApps){
+                        SavedApp sapp = new SavedApp();
+                        sapp.setName(app.getName());
+                        sapp.setPath(app.getPath());
+                        sapp.setFullPath(app.getFullPath());
+                        newApps.add(sapp);
+                    }
+
+                    String jsonApps = new Gson().toJson(newApps);
+                    session.createAppSession(jsonApps);
+                    appsFragmentView.onNewAppsSaved();
+
+                    appsList.clear();
+                    da_apps.notifyDataSetChanged();
+                    getInstalledApps();
+                    currentSelectedApps.clear();
+                    save_refresh.setText("Refresh");
+                }else {
+                    appsList = new ArrayList<>();
+                    getInstalledApps();
                 }
-
-                String jsonApps = new Gson().toJson(newApps);
-                session.createAppSession(jsonApps);
-                Log.e("FASTBACKUP", "SAVE NEW APPS:  " + jsonApps);
             }
         });
 
@@ -94,9 +116,9 @@ public class NewAppsFragment extends Fragment {
 
     public boolean checkSelectedApps(){
         if(!currentSelectedApps.isEmpty()){
-            test.setText("Save");
+            save_refresh.setText("Save");
         }else{
-            test.setText("Refresh");
+            save_refresh.setText("Refresh");
         }
         return true;
     }
@@ -108,22 +130,27 @@ public class NewAppsFragment extends Fragment {
     }
 
     public void initUIViews(View v){
-        rv_apps  = (RecyclerView) v.findViewById(R.id.rv_apps_fm_apps);
-        test     = (TextView) v.findViewById(R.id.test);
+        rv_apps      = (RecyclerView) v.findViewById(R.id.rv_apps_fm_apps);
+        save_refresh = (TextView) v.findViewById(R.id.test);
     }
 
     private void getInstalledApps() {
         List<PackageInfo> packs = getActivity().getPackageManager().getInstalledPackages(0);
         List<SavedApp> savedApps = getListSavedAppsFromSession();
+        String pcknameFull = "";
         for (int i = 0; i < packs.size(); i++) {
             PackageInfo p = packs.get(i);
             if ((isSystemPackage(p) == false)) {
                 String pckName = p.packageName;
+                pcknameFull = pckName;
                 if(!appAlreadySaved(savedApps, pckName)){
                     String appName = p.applicationInfo.loadLabel(getActivity().getPackageManager()).toString();
                     String version = p.versionName;
                     Drawable icon  = p.applicationInfo.loadIcon(getActivity().getPackageManager());
-                    appsList.add(new App(appName, pckName, icon));
+                    if(pckName.length() >= 16){
+                        pckName = pckName.substring(0, 15) + "...";
+                    }
+                    appsList.add(new App(appName, pckName, pcknameFull, icon));
                 }
             }
         }
@@ -151,5 +178,14 @@ public class NewAppsFragment extends Fragment {
 
     private boolean isSystemPackage(PackageInfo pkgInfo) {
         return ((pkgInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) ? true : false;
+    }
+
+    @Override
+    public void onDeleteSavedApp() {
+        currentSelectedApps.clear();
+        appsList.clear();
+        da_apps.notifyDataSetChanged();
+        getInstalledApps();
+        da_apps.notifyDataSetChanged();
     }
 }

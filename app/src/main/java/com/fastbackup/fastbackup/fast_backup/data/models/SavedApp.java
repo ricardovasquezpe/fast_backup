@@ -1,13 +1,9 @@
 package com.fastbackup.fastbackup.fast_backup.data.models;
 
-/**
- * Created by FTF-ANDREA on 11/05/2018.
- */
-
 public class SavedApp {
     private String name;
     private String path;
-
+    private String fullPath;
 
     public String getName() {
         return name;
@@ -23,5 +19,13 @@ public class SavedApp {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
     }
 }

@@ -1,21 +1,19 @@
 package com.fastbackup.fastbackup.fast_backup.activities.Main;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.fastbackup.fastbackup.fast_backup.R;
+import com.fastbackup.fastbackup.fast_backup.fragments.NewAppsFragment;
+import com.fastbackup.fastbackup.fast_backup.fragments.AppsFragment;
 
-public class MainActivity extends FragmentActivity {
-
-    Fragment apps_fragment;
-    Fragment settings_fragment;
+public class MainActivity extends AppCompatActivity {
 
     LinearLayout ll_settings_menu;
     LinearLayout ll_apps_menu;
@@ -33,19 +31,20 @@ public class MainActivity extends FragmentActivity {
     ImageView iv_settings_menu;
     ImageView iv_new_apps_menu;
 
+    AppsFragment appsFragment;
+    NewAppsFragment newAppsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         initUIViews();
-        initVariables();
+        initVariables(savedInstanceState);
         initActions();
     }
 
     public void initUIViews(){
-        FragmentManager fm  = getFragmentManager();
-        apps_fragment       = fm.findFragmentById(R.id.fm_apps_act_main);
-        settings_fragment   = fm.findFragmentById(R.id.fm_settings_act_main);
         ll_apps_menu        = (LinearLayout) findViewById(R.id.ll_apps_menu_act_main);
         ll_new_apps_menu    = (LinearLayout) findViewById(R.id.ll_new_apps_menu_act_main);
         ll_settings_menu    = (LinearLayout) findViewById(R.id.ll_settings_menu_act_main);
@@ -60,7 +59,11 @@ public class MainActivity extends FragmentActivity {
         iv_new_apps_menu    = (ImageView) findViewById(R.id.iv_new_apps_menu_act_main);
     }
 
-    public void initVariables(){
+    public void initVariables(Bundle savedInstanceState){
+        appsFragment    = (AppsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_apps_act_main);
+        newAppsFragment = (NewAppsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_new_apps_act_main);
+        newAppsFragment.newInstance(appsFragment);
+        appsFragment.newInstance(newAppsFragment);
 
     }
 
