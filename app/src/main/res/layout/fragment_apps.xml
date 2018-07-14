@@ -19,6 +19,16 @@
             android:textSize="25dp"
             android:text="Installed Apps" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_file_upload_white_24dp"
+            android:tint="@color/colorPersianGreen"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/iv_upload_fm_apps" />
+
+
     </RelativeLayout>
 
     <ScrollView

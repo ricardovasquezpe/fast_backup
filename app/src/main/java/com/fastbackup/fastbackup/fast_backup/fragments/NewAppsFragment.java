@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +160,7 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
     public boolean appAlreadySaved(List<SavedApp> savedApps, String pathName){
         boolean tof = false;
         for (SavedApp sApp : savedApps){
-            if(pathName.equals(sApp.getPath())){
+            if(pathName.equals(sApp.getFullPath())){
                 tof = true;
             }
         }
@@ -187,5 +186,6 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
         da_apps.notifyDataSetChanged();
         getInstalledApps();
         da_apps.notifyDataSetChanged();
+        save_refresh.setText("Refresh");
     }
 }

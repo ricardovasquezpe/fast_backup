@@ -1,20 +1,28 @@
 package com.fastbackup.fastbackup.fast_backup.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.fastbackup.fastbackup.fast_backup.R;
 import com.fastbackup.fastbackup.fast_backup.adapters.SavedAppsListAdapter;
 import com.fastbackup.fastbackup.fast_backup.data.models.SavedApp;
 import com.fastbackup.fastbackup.fast_backup.helpers.UserSessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +30,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     RecyclerView rv_saved_apps;
     SavedAppsListAdapter da_saved_apps;
     List<SavedApp> savedAppsList;
+    ImageView iv_upload_fm_apps;
 
     UserSessionManager session;
 
@@ -31,6 +40,8 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_apps, container, false);
         initVariables(view);
+        initUIViews(view);
+        initActions();
         rv_saved_apps.setLayoutManager(new LinearLayoutManager(getContext()));
         da_saved_apps = new SavedAppsListAdapter(savedAppsList, this);
         rv_saved_apps.setAdapter(da_saved_apps);
@@ -40,6 +51,11 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         return view;
     }
 
+    public void initUIViews(View v){
+        iv_upload_fm_apps = v.findViewById(R.id.iv_upload_fm_apps);
+        rv_saved_apps     = v.findViewById(R.id.rv_saved_apps_fm_apps);
+    }
+
     public static void newInstance(NewAppsFragment fragment) {
         newAppsFragmentView = fragment;
     }
@@ -47,7 +63,20 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     public void initVariables(View view){
         session       = new UserSessionManager(getActivity().getBaseContext());
         savedAppsList = new ArrayList<>();
-        rv_saved_apps = view.findViewById(R.id.rv_saved_apps_fm_apps);
+    }
+
+    public void initActions(){
+        iv_upload_fm_apps.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String path = Environment.getDataDirectory().getAbsolutePath().toString() + "/storage/emulated/0/appFolder";
+                File mFolder = new File(path);
+                if (!mFolder.exists()) {
+                    mFolder.mkdir();
+                }
+                File Directory = new File("/sdcard/myappFolder/");
+                Directory.mkdirs();
+            }
+        });
     }
 
     public void getSavedApps(){
