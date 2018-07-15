@@ -186,23 +186,28 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     public void importDataFromFileSelected(String data){
         try{
             String[] listUploadedApps = data.split(APPS_FILES_UPLOAD_SEPARATOR);
-            savedAppsList.clear();
-            da_saved_apps.notifyDataSetChanged();
+            List <SavedApp> listSavedApps = new ArrayList<>();
             for (String uploadedApp : listUploadedApps){
                 String [] uploadedAppObject = uploadedApp.split(APPS_FILES_UPLOAD_SEPARATOR_LINE);
                 SavedApp sApp = new SavedApp();
                 sApp.setName(uploadedAppObject[0]);
                 sApp.setFullPath(uploadedAppObject[1]);
                 sApp.setPath(uploadedAppObject[1]);
-                savedAppsList.add(sApp);
+                listSavedApps.add(sApp);
             }
+            savedAppsList.clear();
             da_saved_apps.notifyDataSetChanged();
+            savedAppsList.addAll(listSavedApps);
+            da_saved_apps.notifyDataSetChanged();
+
             session.deleteSessionApp();
             String jsonApps = new Gson().toJson(savedAppsList);
             session.createAppSession(jsonApps);
             newAppsFragmentView.onChangeSavedApp();
             mainActivityView.onToast("File Uploaded");
-        }catch(Exception e){}
+        }catch(Exception e){
+            mainActivityView.onToast("Something wrong with the selected file, make sure you are selecting the .fbackup file please");
+        }
     }
 
     private String readTextFile(Uri uri){
@@ -228,14 +233,6 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
             }
         }
         return builder.toString();
-    }
-
-    private String getFileExtension(String name) {
-        try {
-            return name.substring(name.lastIndexOf(".") + 1);
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     @Override
