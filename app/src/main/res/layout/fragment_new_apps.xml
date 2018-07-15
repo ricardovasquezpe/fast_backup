@@ -17,7 +17,7 @@
             android:textColor="#000000"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:text="Search Apps" />
+            android:text="Installed Apps" />
 
         <RelativeLayout
             android:layout_width="wrap_content"

@@ -1,10 +1,14 @@
 package com.fastbackup.fastbackup.fast_backup.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +38,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     SavedAppsListAdapter da_saved_apps;
     List<SavedApp> savedAppsList;
     ImageView iv_upload_fm_apps;
+    ImageView iv_download_fm_apps;
 
     UserSessionManager session;
 
@@ -64,14 +69,15 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         return view;
     }
 
-    public void initUIViews(View v){
-        iv_upload_fm_apps = v.findViewById(R.id.iv_upload_fm_apps);
-        rv_saved_apps     = v.findViewById(R.id.rv_saved_apps_fm_apps);
-    }
-
     public static void newInstance(NewAppsFragment fragment, MainActivity activity) {
         newAppsFragmentView = fragment;
         mainActivityView    = activity;
+    }
+
+    public void initUIViews(View v){
+        iv_upload_fm_apps   = v.findViewById(R.id.iv_upload_fm_apps);
+        iv_download_fm_apps = v.findViewById(R.id.iv_download_fm_apps);
+        rv_saved_apps       = v.findViewById(R.id.rv_saved_apps_fm_apps);
     }
 
     public void initVariables(View view){
@@ -80,13 +86,18 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     }
 
     public void initActions(){
-        iv_upload_fm_apps.setOnClickListener(new View.OnClickListener() {
+        iv_download_fm_apps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     createFolder();
                 } else {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXST);
-                }*/
+                }
+            }
+        });
+
+        iv_upload_fm_apps.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 searchBackupFile();
             }
         });
