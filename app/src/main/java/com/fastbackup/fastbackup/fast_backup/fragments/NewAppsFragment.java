@@ -180,7 +180,7 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
     }
 
     @Override
-    public void onDeleteSavedApp() {
+    public void onChangeSavedApp() {
         currentSelectedApps.clear();
         appsList.clear();
         da_apps.notifyDataSetChanged();

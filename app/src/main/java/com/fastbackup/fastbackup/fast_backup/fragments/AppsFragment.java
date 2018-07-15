@@ -1,6 +1,5 @@
 package com.fastbackup.fastbackup.fast_backup.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,23 +7,27 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.fastbackup.fastbackup.fast_backup.R;
+import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity;
+import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivityView;
 import com.fastbackup.fastbackup.fast_backup.adapters.SavedAppsListAdapter;
 import com.fastbackup.fastbackup.fast_backup.data.models.SavedApp;
 import com.fastbackup.fastbackup.fast_backup.helpers.UserSessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 public class AppsFragment extends Fragment implements AppsFragmentView{
     RecyclerView rv_saved_apps;
@@ -35,6 +38,16 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     UserSessionManager session;
 
     static NewAppsFragmentView newAppsFragmentView;
+
+    private static String LOG                              = "AppsFragment";
+    public static final Integer WRITE_EXST                 = 0x1;
+    public static final Integer FILE_PICKER                = 0x2;
+    public static final String APPS_FILES_UPLOAD_SEPARATOR_LINE = "///";
+    public static final String APPS_FILES_UPLOAD_SEPARATOR = "//_//";
+
+    static MainActivityView mainActivityView;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,8 +69,9 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         rv_saved_apps     = v.findViewById(R.id.rv_saved_apps_fm_apps);
     }
 
-    public static void newInstance(NewAppsFragment fragment) {
+    public static void newInstance(NewAppsFragment fragment, MainActivity activity) {
         newAppsFragmentView = fragment;
+        mainActivityView    = activity;
     }
 
     public void initVariables(View view){
@@ -68,15 +82,27 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     public void initActions(){
         iv_upload_fm_apps.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String path = Environment.getDataDirectory().getAbsolutePath().toString() + "/storage/emulated/0/appFolder";
-                File mFolder = new File(path);
-                if (!mFolder.exists()) {
-                    mFolder.mkdir();
-                }
-                File Directory = new File("/sdcard/myappFolder/");
-                Directory.mkdirs();
+                /*if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    createFolder();
+                } else {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXST);
+                }*/
+                searchBackupFile();
             }
         });
+    }
+
+    public void createFolder(){
+        File folder = new File(Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles");
+        if (!folder.exists()) {
+            if(folder.mkdirs()){
+                createBackupFile();
+            }else{
+                mainActivityView.onToast("Error Creating Folder");
+            }
+        }else{
+            createBackupFile();
+        }
     }
 
     public void getSavedApps(){
@@ -101,6 +127,115 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         }
 
         return apps;
+    }
+
+    public void createBackupFile(){
+        if(!savedAppsList.isEmpty()){
+            try{
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                String filePath = Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles" + File.separator + "backup_1" + timestamp.getTime() + ".txt";
+                File file = new File(filePath);
+
+                String appsString = "";
+                for (SavedApp sApp : savedAppsList){
+                    appsString += sApp.getName() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getFullPath() + System.getProperty("line.separator");
+                }
+
+                if(file.createNewFile() == true){
+                    mainActivityView.onToast("Your Files was created on FastBackupFiles folder, Share it!");
+                    if(file.exists()){
+                        FileWriter writer = new FileWriter(file);
+                        writer.append(appsString);
+                        writer.flush();
+                        writer.close();
+                        shareFile(filePath);
+                    }
+                }
+            }catch(Exception e){
+                mainActivityView.onToast("Error Creating the File");
+            }
+        }else{
+            mainActivityView.onToast("No Apps to download the  Backup File");
+        }
+    }
+
+    public void shareFile(String filePath){
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("*/*");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "FastBackup File");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(filePath));
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    public void searchBackupFile(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        getActivity().startActivityForResult(intent, FILE_PICKER);
+    }
+
+    public void onFileSelected(Intent data){
+        Uri selectedFile  = data.getData();
+        String dataReader = readTextFile(selectedFile);
+        if(!dataReader.isEmpty()){
+            importDataFromFileSelected(dataReader);
+        } else {
+            mainActivityView.onToast("The file selected is empty");
+        }
+    }
+
+    public void importDataFromFileSelected(String data){
+        try{
+            String[] listUploadedApps = data.split(APPS_FILES_UPLOAD_SEPARATOR);
+            savedAppsList.clear();
+            da_saved_apps.notifyDataSetChanged();
+            for (String uploadedApp : listUploadedApps){
+                String [] uploadedAppObject = uploadedApp.split(APPS_FILES_UPLOAD_SEPARATOR_LINE);
+                SavedApp sApp = new SavedApp();
+                sApp.setName(uploadedAppObject[0]);
+                sApp.setFullPath(uploadedAppObject[1]);
+                sApp.setPath(uploadedAppObject[1]);
+                savedAppsList.add(sApp);
+            }
+            da_saved_apps.notifyDataSetChanged();
+            session.deleteSessionApp();
+            String jsonApps = new Gson().toJson(savedAppsList);
+            session.createAppSession(jsonApps);
+            newAppsFragmentView.onChangeSavedApp();
+            mainActivityView.onToast("File Uploaded");
+        }catch(Exception e){}
+    }
+
+    private String readTextFile(Uri uri){
+        BufferedReader reader = null;
+        StringBuilder builder = new StringBuilder();
+        try {
+            reader = new BufferedReader(new InputStreamReader(getActivity().getContentResolver().openInputStream(uri)));
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                builder.append(line + APPS_FILES_UPLOAD_SEPARATOR);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return builder.toString();
+    }
+
+    private String getFileExtension(String name) {
+        try {
+            return name.substring(name.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
@@ -145,8 +280,13 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
                 savedAppsList.addAll(savedApps);
                 da_saved_apps.notifyDataSetChanged();
 
-                newAppsFragmentView.onDeleteSavedApp();
+                newAppsFragmentView.onChangeSavedApp();
             }
         }
+    }
+
+    @Override
+    public void onStoragePermissionDone() {
+        createFolder();
     }
 }

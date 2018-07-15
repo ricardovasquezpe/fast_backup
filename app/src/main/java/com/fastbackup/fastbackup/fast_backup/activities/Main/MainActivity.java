@@ -1,19 +1,21 @@
 package com.fastbackup.fastbackup.fast_backup.activities.Main;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.fastbackup.fastbackup.fast_backup.R;
 import com.fastbackup.fastbackup.fast_backup.fragments.NewAppsFragment;
 import com.fastbackup.fastbackup.fast_backup.fragments.AppsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView{
 
     LinearLayout ll_settings_menu;
     LinearLayout ll_apps_menu;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         initUIViews();
-        initVariables(savedInstanceState);
+        initVariables();
         initActions();
     }
 
@@ -59,12 +61,11 @@ public class MainActivity extends AppCompatActivity {
         iv_new_apps_menu    = (ImageView) findViewById(R.id.iv_new_apps_menu_act_main);
     }
 
-    public void initVariables(Bundle savedInstanceState){
+    public void initVariables(){
         appsFragment    = (AppsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_apps_act_main);
         newAppsFragment = (NewAppsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_new_apps_act_main);
         newAppsFragment.newInstance(appsFragment);
-        appsFragment.newInstance(newAppsFragment);
-
+        appsFragment.newInstance(newAppsFragment, this);
     }
 
     public void initActions(){
@@ -123,5 +124,32 @@ public class MainActivity extends AppCompatActivity {
             tv_apps_menu.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSilver));
             tv_new_apps_menu.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPersianGreen));
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            if(requestCode == appsFragment.FILE_PICKER){
+                appsFragment.onFileSelected(data);
+            }else{
+                Toast.makeText(this, "Try again please", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if(requestCode == appsFragment.WRITE_EXST){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                appsFragment.onStoragePermissionDone();
+            } else {
+                Toast.makeText(this, "Permission to store your backup needed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

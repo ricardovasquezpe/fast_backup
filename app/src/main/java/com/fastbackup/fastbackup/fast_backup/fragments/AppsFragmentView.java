@@ -10,4 +10,6 @@ public interface AppsFragmentView {
 
     void onDeleteAppClicked(SavedApp app);
 
+    void onStoragePermissionDone();
+
 }
