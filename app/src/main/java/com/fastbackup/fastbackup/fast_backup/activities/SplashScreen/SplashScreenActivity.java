@@ -23,23 +23,20 @@ public class SplashScreenActivity extends Activity {
         helper.changeStatusColorBar(getWindow(), this, R.color.colorWhite);
         setContentView(R.layout.activity_splash_screen);
         session = new UserSessionManager(this.getBaseContext());
-        //session.logoutUser();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                /*if(!session.isUserLoggedIn()){
-                    Intent loginIntent = new Intent().setClass(
-                            SplashScreenActivity.this, LoginActivity.class);
-                    startActivity(loginIntent);
-                    finish();
-                }else {
-                    Intent mainIntent = new Intent().setClass(
-                            SplashScreenActivity.this, MainActivity.class);
+                if(session.getWelcomeSession()){
+                    Intent mainIntent = new Intent().setClass(SplashScreenActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
-                }*/
-                Intent mainIntent = new Intent().setClass(
-                        SplashScreenActivity.this, MainActivity.class);
+                } else {
+                    Intent welcomeIntent = new Intent().setClass(SplashScreenActivity.this, WelcomeActivity.class);
+                    startActivity(welcomeIntent);
+                    finish();
+                }
+
+                Intent mainIntent = new Intent().setClass(SplashScreenActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
             }

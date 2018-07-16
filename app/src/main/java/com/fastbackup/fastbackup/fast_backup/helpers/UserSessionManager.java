@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import com.fastbackup.fastbackup.fast_backup.activities.Login.LoginActivity;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class UserSessionManager {
     SharedPreferences pref;
@@ -20,6 +18,7 @@ public class UserSessionManager {
     public static final String KEY_PASSWORD  = "password";
     public static final String KEY_TOKEN     = "token";
     public static final String KEY_APPS      = "apps";
+    public static final String KEY_WELCOME   = "welcome";
 
     public UserSessionManager(Context context){
         this._context = context;
@@ -72,6 +71,19 @@ public class UserSessionManager {
     public void createAppSession(String uApps){
         editor.putString(KEY_APPS, uApps);
         editor.commit();
+    }
+
+    public void createWelcomeSession(){
+        editor.putBoolean(KEY_WELCOME, true);
+        editor.commit();
+    }
+
+    public boolean getWelcomeSession(){
+        return pref.getBoolean(KEY_WELCOME, false);
+    }
+
+    public void deleteWelcomeSession(){
+        pref.edit().remove(KEY_WELCOME).commit();
     }
 
     public String getSessionApps(){
