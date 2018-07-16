@@ -9,7 +9,7 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="15dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Installed Apps"
+                android:text="Selected Apps"
                 android:textColor="@color/colorPersianGreen"
                 android:textSize="11dp"
                 android:id="@+id/tv_apps_menu_act_main" />
@@ -113,7 +113,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search Apps"
+                android:text="Installed Apps"
                 android:textSize="11dp"
                 android:id="@+id/tv_new_apps_menu_act_main" />
 
