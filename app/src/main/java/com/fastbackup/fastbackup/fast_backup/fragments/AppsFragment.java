@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
@@ -43,16 +42,13 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
     UserSessionManager session;
 
     static NewAppsFragmentView newAppsFragmentView;
+    static MainActivityView mainActivityView;
 
     private static String LOG                                   = "AppsFragment";
     public static final Integer WRITE_EXST                      = 0x1;
     public static final Integer FILE_PICKER                     = 0x2;
     public static final String APPS_FILES_UPLOAD_SEPARATOR_LINE = "///";
     public static final String APPS_FILES_UPLOAD_SEPARATOR      = "//_//";
-
-    static MainActivityView mainActivityView;
-
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

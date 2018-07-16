@@ -6,14 +6,13 @@ import android.os.Bundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.fastbackup.fastbackup.fast_backup.R;
-import com.fastbackup.fastbackup.fast_backup.activities.Login.LoginActivity;
 import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity;
 import com.fastbackup.fastbackup.fast_backup.helpers.Helper;
 import com.fastbackup.fastbackup.fast_backup.helpers.UserSessionManager;
 
 public class SplashScreenActivity extends Activity {
 
-    private static final long SPLASH_SCREEN_DELAY = 3000;
+    private static final long SPLASH_SCREEN_DELAY = 1500;
     UserSessionManager session;
     Helper helper;
 
@@ -28,7 +27,7 @@ public class SplashScreenActivity extends Activity {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(!session.isUserLoggedIn()){
+                /*if(!session.isUserLoggedIn()){
                     Intent loginIntent = new Intent().setClass(
                             SplashScreenActivity.this, LoginActivity.class);
                     startActivity(loginIntent);
@@ -38,7 +37,11 @@ public class SplashScreenActivity extends Activity {
                             SplashScreenActivity.this, MainActivity.class);
                     startActivity(mainIntent);
                     finish();
-                }
+                }*/
+                Intent mainIntent = new Intent().setClass(
+                        SplashScreenActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish();
             }
         };
 
