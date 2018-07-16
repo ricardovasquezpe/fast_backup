@@ -14,6 +14,8 @@ import com.fastbackup.fastbackup.fast_backup.data.models.BackupFiles;
 import com.fastbackup.fastbackup.fast_backup.dialogs.FilesBackupDialog;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     public void initActions(){
         ll_files_generated_fm_settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                backupFilesList.clear();
                 getListOfFilesBackup();
             }
         });
@@ -54,10 +57,19 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
             bFile.setCreated_at(last_modified);
             backupFilesList.add(bFile);
         }
+        orderBackuoFilesCreated();
 
         FilesBackupDialog filesBackupDialog = new FilesBackupDialog(getActivity());
         filesBackupDialog.initVariablesOnCreate(backupFilesList, this);
         filesBackupDialog.show();
+    }
+
+    public void orderBackuoFilesCreated(){
+        Collections.sort(backupFilesList, new Comparator<BackupFiles>(){
+            public int compare(BackupFiles s1, BackupFiles s2) {
+                return s2.getCreated_at().compareTo(s1.getCreated_at());
+            }
+        });
     }
 
     public void shareFile(String filePath){
