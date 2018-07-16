@@ -44,11 +44,11 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
 
     static NewAppsFragmentView newAppsFragmentView;
 
-    private static String LOG                              = "AppsFragment";
-    public static final Integer WRITE_EXST                 = 0x1;
-    public static final Integer FILE_PICKER                = 0x2;
+    private static String LOG                                   = "AppsFragment";
+    public static final Integer WRITE_EXST                      = 0x1;
+    public static final Integer FILE_PICKER                     = 0x2;
     public static final String APPS_FILES_UPLOAD_SEPARATOR_LINE = "///";
-    public static final String APPS_FILES_UPLOAD_SEPARATOR = "//_//";
+    public static final String APPS_FILES_UPLOAD_SEPARATOR      = "//_//";
 
     static MainActivityView mainActivityView;
 
@@ -149,7 +149,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
 
                 String appsString = "";
                 for (SavedApp sApp : savedAppsList){
-                    appsString += sApp.getName() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getFullPath() + System.getProperty("line.separator");
+                    appsString += sApp.getName() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getFullPath() + System.getProperty("line.separator") + sApp.getPath() + System.getProperty("line.separator");
                 }
 
                 if(file.createNewFile() == true){
@@ -203,7 +203,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
                 SavedApp sApp = new SavedApp();
                 sApp.setName(uploadedAppObject[0]);
                 sApp.setFullPath(uploadedAppObject[1]);
-                sApp.setPath(uploadedAppObject[1]);
+                sApp.setPath(uploadedAppObject[2]);
                 listSavedApps.add(sApp);
             }
             savedAppsList.clear();
