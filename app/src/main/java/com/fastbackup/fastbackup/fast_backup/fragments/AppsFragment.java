@@ -149,7 +149,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
 
                 String appsString = "";
                 for (SavedApp sApp : savedAppsList){
-                    appsString += sApp.getName() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getFullPath() + System.getProperty("line.separator") + sApp.getPath() + System.getProperty("line.separator");
+                    appsString += sApp.getName() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getFullPath() + APPS_FILES_UPLOAD_SEPARATOR_LINE + sApp.getPath() + System.getProperty("line.separator");
                 }
 
                 if(file.createNewFile() == true){
