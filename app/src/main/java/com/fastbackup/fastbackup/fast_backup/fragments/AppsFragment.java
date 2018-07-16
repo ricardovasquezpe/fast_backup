@@ -140,7 +140,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         if(!savedAppsList.isEmpty()){
             try{
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                String filePath = Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles" + File.separator + "backup_1" + timestamp.getTime() + ".txt";
+                String filePath = Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles" + File.separator + "backup_1" + timestamp.getTime() + ".fbackup";
                 File file = new File(filePath);
 
                 String appsString = "";

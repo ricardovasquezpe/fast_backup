@@ -21,9 +21,9 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:src="@drawable/ic_file_upload_white_24dp"
-            android:tint="@color/colorTexasRose"
+            android:tint="@color/colorHeliotrope"
             android:id="@+id/iv_upload_fm_apps"
             android:layout_alignTop="@+id/iv_download_fm_apps"
             android:layout_toStartOf="@+id/iv_download_fm_apps" />
@@ -31,9 +31,9 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:src="@drawable/ic_file_download_white_24dp"
-            android:tint="@color/colorTexasRose"
+            android:tint="@color/colorDodgerBlue"
             android:layout_alignParentEnd="true"
             android:id="@+id/iv_download_fm_apps"
             android:layout_marginLeft="15dp"/>

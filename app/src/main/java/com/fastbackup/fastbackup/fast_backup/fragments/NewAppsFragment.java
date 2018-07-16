@@ -91,7 +91,7 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
                     da_apps.notifyDataSetChanged();
                     getInstalledApps();
                     currentSelectedApps.clear();
-                    save_refresh.setText("Refresh");
+                    save_refresh.setText("");
                 }else {
                     appsList = new ArrayList<>();
                     getInstalledApps();
@@ -117,7 +117,7 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
         if(!currentSelectedApps.isEmpty()){
             save_refresh.setText("Save");
         }else{
-            save_refresh.setText("Refresh");
+            save_refresh.setText("");
         }
         return true;
     }
@@ -186,6 +186,6 @@ public class NewAppsFragment extends Fragment implements NewAppsFragmentView{
         da_apps.notifyDataSetChanged();
         getInstalledApps();
         da_apps.notifyDataSetChanged();
-        save_refresh.setText("Refresh");
+        save_refresh.setText("");
     }
 }

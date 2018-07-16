@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/test"
-                android:text="Refresh"
+                android:text=""
                 android:textColor="@color/colorDoveGray"
                 android:gravity="center_vertical"/>
 

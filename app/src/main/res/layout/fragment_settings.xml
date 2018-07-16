@@ -36,7 +36,8 @@
             android:paddingBottom="15dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/ll_about_us_fm_settings">
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,7 +60,8 @@
             android:paddingBottom="15dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/ll_support_fm_settings">
 
             <TextView
                 android:layout_width="match_parent"

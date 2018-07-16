@@ -6,4 +6,6 @@ public interface SettingsFragmentView {
 
     void onBackupFileShare(BackupFiles item);
 
+    void onFaskBackupPlayStore();
+
 }

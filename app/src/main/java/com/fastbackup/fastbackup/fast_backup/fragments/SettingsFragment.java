@@ -17,7 +17,10 @@ import com.fastbackup.fastbackup.fast_backup.R;
 import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity;
 import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivityView;
 import com.fastbackup.fastbackup.fast_backup.data.models.BackupFiles;
+import com.fastbackup.fastbackup.fast_backup.dialogs.AboutUsDialog;
 import com.fastbackup.fastbackup.fast_backup.dialogs.FilesBackupDialog;
+import com.fastbackup.fastbackup.fast_backup.dialogs.SupportDialog;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +32,8 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
 
     List<BackupFiles> backupFilesList;
     LinearLayout ll_files_generated_fm_settings;
+    LinearLayout ll_about_us_fm_settings;
+    LinearLayout ll_support_fm_settings;
     static MainActivityView mainActivityView;
 
     public static final Integer WRITE_EXST                      = 0x10;
@@ -48,6 +53,8 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     public void initVariables(View view){
         backupFilesList                = new ArrayList<>();
         ll_files_generated_fm_settings = view.findViewById(R.id.ll_files_generated_fm_settings);
+        ll_about_us_fm_settings        = view.findViewById(R.id.ll_about_us_fm_settings);
+        ll_support_fm_settings         = view.findViewById(R.id.ll_support_fm_settings);
     }
 
     public void initActions(){
@@ -57,6 +64,30 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
                 checkPermissionsToListBackupFiles();
             }
         });
+
+        ll_about_us_fm_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToAboutUsDialog();
+            }
+        });
+
+        ll_support_fm_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToSupportDialog();
+            }
+        });
+    }
+
+    public void goToAboutUsDialog(){
+        AboutUsDialog aboutUsDialog = new AboutUsDialog(getActivity());
+        aboutUsDialog.initVariablesOnCreate(this);
+        aboutUsDialog.show();
+    }
+
+    public void goToSupportDialog(){
+        SupportDialog aboutUsDialog = new SupportDialog(getActivity());
+        aboutUsDialog.initVariablesOnCreate(this);
+        aboutUsDialog.show();
     }
 
     public void checkPermissionsToListBackupFiles(){
@@ -108,6 +139,15 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     @Override
     public void onBackupFileShare(BackupFiles item) {
         shareFile(item.getPath());
+    }
+
+    @Override
+    public void onFaskBackupPlayStore() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.fastbackup.fastbackup.fast_backup")));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.fastbackup.fastbackup.fast_backup")));
+        }
     }
 
     public void onStoragePermissionDone(){
