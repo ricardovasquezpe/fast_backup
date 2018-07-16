@@ -1,15 +1,21 @@
 package com.fastbackup.fastbackup.fast_backup.fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.fastbackup.fastbackup.fast_backup.R;
+import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity;
+import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivityView;
 import com.fastbackup.fastbackup.fast_backup.data.models.BackupFiles;
 import com.fastbackup.fastbackup.fast_backup.dialogs.FilesBackupDialog;
 import java.io.File;
@@ -23,6 +29,9 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
 
     List<BackupFiles> backupFilesList;
     LinearLayout ll_files_generated_fm_settings;
+    static MainActivityView mainActivityView;
+
+    public static final Integer WRITE_EXST                      = 0x10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +39,10 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
         initVariables(view);
         initActions();
         return view;
+    }
+
+    public static void newInstance(MainActivity activity) {
+        mainActivityView = activity;
     }
 
     public void initVariables(View view){
@@ -41,27 +54,39 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
         ll_files_generated_fm_settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 backupFilesList.clear();
-                getListOfFilesBackup();
+                checkPermissionsToListBackupFiles();
             }
         });
+    }
+
+    public void checkPermissionsToListBackupFiles(){
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            getListOfFilesBackup();
+        }else{
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXST);
+        }
     }
 
     public void getListOfFilesBackup(){
         File directory = new File(Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles");
         File[] listBackup = directory.listFiles();
-        for (File backup : listBackup) {
-            BackupFiles bFile = new BackupFiles();
-            bFile.setName(backup.getName());
-            bFile.setPath(backup.getAbsolutePath());
-            Date last_modified = new Date(backup.lastModified());
-            bFile.setCreated_at(last_modified);
-            backupFilesList.add(bFile);
-        }
-        orderBackuoFilesCreated();
+        if(listBackup.length != 0){
+            for (File backup : listBackup) {
+                BackupFiles bFile = new BackupFiles();
+                bFile.setName(backup.getName());
+                bFile.setPath(backup.getAbsolutePath());
+                Date last_modified = new Date(backup.lastModified());
+                bFile.setCreated_at(last_modified);
+                backupFilesList.add(bFile);
+            }
+            orderBackuoFilesCreated();
 
-        FilesBackupDialog filesBackupDialog = new FilesBackupDialog(getActivity());
-        filesBackupDialog.initVariablesOnCreate(backupFilesList, this);
-        filesBackupDialog.show();
+            FilesBackupDialog filesBackupDialog = new FilesBackupDialog(getActivity());
+            filesBackupDialog.initVariablesOnCreate(backupFilesList, this);
+            filesBackupDialog.show();
+        } else {
+            mainActivityView.onToast("No backup files generated");
+        }
     }
 
     public void orderBackuoFilesCreated(){
@@ -83,5 +108,9 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     @Override
     public void onBackupFileShare(BackupFiles item) {
         shareFile(item.getPath());
+    }
+
+    public void onStoragePermissionDone(){
+        getListOfFilesBackup();
     }
 }

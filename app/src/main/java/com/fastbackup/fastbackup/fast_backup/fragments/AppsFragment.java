@@ -35,7 +35,7 @@ import java.sql.Timestamp;
 public class AppsFragment extends Fragment implements AppsFragmentView{
     RecyclerView rv_saved_apps;
     SavedAppsListAdapter da_saved_apps;
-    List<SavedApp> savedAppsList;
+    public List<SavedApp> savedAppsList;
     ImageView iv_upload_fm_apps;
     ImageView iv_download_fm_apps;
 

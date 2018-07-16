@@ -41,10 +41,10 @@ public class WelcomeActivity extends Activity {
 
         setContentView(R.layout.activity_welcome);
 
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager  = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        btnSkip    = (Button) findViewById(R.id.btn_skip);
+        btnNext    = (Button) findViewById(R.id.btn_next);
 
 
         layouts = new int[]{
@@ -71,11 +71,8 @@ public class WelcomeActivity extends Activity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
                 int current = getItem(+1);
                 if (current < layouts.length) {
-                    // move to next screen
                     viewPager.setCurrentItem(current);
                 } else {
                     launchHomeScreen();

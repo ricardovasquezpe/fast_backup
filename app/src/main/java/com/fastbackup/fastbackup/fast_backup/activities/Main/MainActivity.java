@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.fastbackup.fastbackup.fast_backup.R;
 import com.fastbackup.fastbackup.fast_backup.fragments.NewAppsFragment;
 import com.fastbackup.fastbackup.fast_backup.fragments.AppsFragment;
+import com.fastbackup.fastbackup.fast_backup.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView{
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
 
     AppsFragment appsFragment;
     NewAppsFragment newAppsFragment;
+    SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         initUIViews();
         initVariables();
         initActions();
+
+        verifyListDoneFragment();
     }
 
     public void initUIViews(){
@@ -66,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         newAppsFragment = (NewAppsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_new_apps_act_main);
         newAppsFragment.newInstance(appsFragment);
         appsFragment.newInstance(newAppsFragment, this);
+        settingsFragment = (SettingsFragment) getSupportFragmentManager().findFragmentById(R.id.fm_settings_act_main);
+        settingsFragment.newInstance(this);
     }
 
     public void initActions(){
@@ -126,6 +132,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         }
     }
 
+    public void verifyListDoneFragment(){
+        if(appsFragment.savedAppsList.size() == 0){
+            rl_cont_fm_apps.setVisibility(View.GONE);
+            rl_cont_fm_settings.setVisibility(View.GONE);
+            rl_cont_fm_new_apps.setVisibility(View.VISIBLE);
+
+            iv_settings_menu.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorSilver), android.graphics.PorterDuff.Mode.MULTIPLY);
+            iv_apps_menu.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorSilver), android.graphics.PorterDuff.Mode.MULTIPLY);
+            iv_new_apps_menu.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.colorPersianGreen), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+            tv_settings_menu.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSilver));
+            tv_apps_menu.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSilver));
+            tv_new_apps_menu.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPersianGreen));
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
@@ -144,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
                 appsFragment.onStoragePermissionDone();
             } else {
                 Toast.makeText(this, "Permission to store your backup needed", Toast.LENGTH_SHORT).show();
+            }
+        } else if(requestCode == settingsFragment.WRITE_EXST){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                settingsFragment.onStoragePermissionDone();
+            } else {
+                Toast.makeText(this, "Permission to check your backup files", Toast.LENGTH_SHORT).show();
             }
         }
     }
