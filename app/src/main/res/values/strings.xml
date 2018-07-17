@@ -1,24 +1,26 @@
 <resources>
     <string name="app_name">FastBackup</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
 
-    <string name="slide_1_title">FastBackup!</string>
-    <string name="slide_1_desc">Step 1: Select your apps to create the backup</string>
+    <string name="slide_1_title">Select your apps</string>
+    <string name="slide_1_desc">Step 1: Select your favorite apps to export them and press Save</string>
 
-    <string name="slide_2_title">20+ apps in your phone?</string>
-    <string name="slide_2_desc">Step 2: Export your apps selected with the Download icon</string>
+    <string name="slide_2_title">Export and share your apps</string>
+    <string name="slide_2_desc">Step 2: Export your apps selected with the Download Blue icon and Share it</string>
 
-    <string name="slide_3_title">Import it!</string>
-    <string name="slide_3_desc">Step 3: Import it on your other phone and dowloads the apps with the Google Play Store Icon</string>
+    <string name="slide_3_title">Import your apps on other device</string>
+    <string name="slide_3_desc">Step 3: Import your FastBackup file with the Upload Purple Icon</string>
 
-    <string name="slide_4_title">Just one more click</string>
-    <string name="slide_4_desc">Enjoy it and share the experience FaskBackup!</string>
+    <string name="slide_4_title">Download your apps!</string>
+    <string name="slide_4_desc">Step 4: Press Google Play Store icon to install each app</string>
+
+    <string name="slide_5_title">This is FastBackup!</string>
+    <string name="slide_5_desc">Enjoy and share the experience FaskBackup now!</string>
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>

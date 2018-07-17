@@ -4,4 +4,6 @@ public interface MainActivityView {
 
     void onToast(String message);
 
+    void onLoadTutorial();
+
 }

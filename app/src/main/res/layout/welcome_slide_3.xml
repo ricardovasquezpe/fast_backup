@@ -13,11 +13,12 @@
 
         <ImageView
             android:layout_width="200dp"
-            android:layout_height="250dp"
-            android:src="@drawable/backups_created_sc" />
+            android:layout_height="400dp"
+            android:src="@drawable/selected_app_sc_upload" />
 
         <TextView
             android:layout_width="wrap_content"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/slide_3_title"
             android:textColor="@android:color/white"

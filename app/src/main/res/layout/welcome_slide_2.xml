@@ -13,10 +13,11 @@
 
         <ImageView
             android:layout_width="200dp"
-            android:layout_height="250dp"
-            android:src="@drawable/selected_app_sc" />
+            android:layout_height="400dp"
+            android:src="@drawable/selected_app_sc_download" />
 
         <TextView
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/slide_2_title"
@@ -36,6 +37,5 @@
             android:textSize="@dimen/slide_desc" />
 
     </LinearLayout>
-
 
 </RelativeLayout>

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import com.fastbackup.fastbackup.fast_backup.R;
 import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivity;
 import com.fastbackup.fastbackup.fast_backup.activities.Main.MainActivityView;
+import com.fastbackup.fastbackup.fast_backup.activities.SplashScreen.SplashScreenActivity;
+import com.fastbackup.fastbackup.fast_backup.activities.SplashScreen.WelcomeActivity;
 import com.fastbackup.fastbackup.fast_backup.data.models.BackupFiles;
 import com.fastbackup.fastbackup.fast_backup.dialogs.AboutUsDialog;
 import com.fastbackup.fastbackup.fast_backup.dialogs.FilesBackupDialog;
@@ -34,6 +36,7 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     LinearLayout ll_files_generated_fm_settings;
     LinearLayout ll_about_us_fm_settings;
     LinearLayout ll_support_fm_settings;
+    LinearLayout ll_tutorial_fm_settings;
     static MainActivityView mainActivityView;
 
     public static final Integer WRITE_EXST                      = 0x10;
@@ -55,6 +58,7 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
         ll_files_generated_fm_settings = view.findViewById(R.id.ll_files_generated_fm_settings);
         ll_about_us_fm_settings        = view.findViewById(R.id.ll_about_us_fm_settings);
         ll_support_fm_settings         = view.findViewById(R.id.ll_support_fm_settings);
+        ll_tutorial_fm_settings        = view.findViewById(R.id.ll_tutorial_fm_settings);
     }
 
     public void initActions(){
@@ -74,6 +78,12 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
         ll_support_fm_settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToSupportDialog();
+            }
+        });
+
+        ll_tutorial_fm_settings.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mainActivityView.onLoadTutorial();
             }
         });
     }

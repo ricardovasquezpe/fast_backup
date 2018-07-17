@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.fastbackup.fastbackup.fast_backup.R;
+import com.fastbackup.fastbackup.fast_backup.activities.SplashScreen.WelcomeActivity;
 import com.fastbackup.fastbackup.fast_backup.fragments.NewAppsFragment;
 import com.fastbackup.fastbackup.fast_backup.fragments.AppsFragment;
 import com.fastbackup.fastbackup.fast_backup.fragments.SettingsFragment;
@@ -179,5 +180,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
     @Override
     public void onToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onLoadTutorial() {
+        Intent welcomeIntent = new Intent().setClass(this, WelcomeActivity.class);
+        startActivity(welcomeIntent);
+        finish();
     }
 }

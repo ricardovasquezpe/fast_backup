@@ -149,7 +149,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
                 }
 
                 if(file.createNewFile() == true){
-                    mainActivityView.onToast("Your Files was created on FastBackupFiles folder, Share it!");
+                    mainActivityView.onToast("Your Files was exported on FastBackupFiles folder, Share it!");
                     if(file.exists()){
                         FileWriter writer = new FileWriter(file);
                         writer.append(appsString);
@@ -211,7 +211,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
             String jsonApps = new Gson().toJson(savedAppsList);
             session.createAppSession(jsonApps);
             newAppsFragmentView.onChangeSavedApp();
-            mainActivityView.onToast("File Uploaded");
+            mainActivityView.onToast("File Imported");
         }catch(Exception e){
             mainActivityView.onToast("Something wrong with the selected file, make sure you are selecting the .fbackup file please");
         }
