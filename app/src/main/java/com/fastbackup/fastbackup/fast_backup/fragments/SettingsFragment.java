@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,10 +140,11 @@ public class SettingsFragment extends Fragment implements SettingsFragmentView{
     }
 
     public void shareFile(String filePath){
+        File file = new File(filePath);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("*/*");
+        sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "FastBackup File");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(filePath));
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getContext(), "com.myfileprovider", file));
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 

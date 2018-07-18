@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -140,7 +141,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         if(!savedAppsList.isEmpty()){
             try{
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                String filePath = Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles" + File.separator + "backup_1" + timestamp.getTime() + ".fbackup";
+                String filePath = Environment.getExternalStorageDirectory() + File.separator + "FastBackupFiles" + File.separator + "backup_" + timestamp.getTime() + ".fbackup";
                 File file = new File(filePath);
 
                 String appsString = "";
@@ -155,7 +156,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
                         writer.append(appsString);
                         writer.flush();
                         writer.close();
-                        shareFile(filePath);
+                        shareFile(FileProvider.getUriForFile(getContext(), "com.myfileprovider",file));
                     }
                 }
             }catch(Exception e){
@@ -166,11 +167,11 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
         }
     }
 
-    public void shareFile(String filePath){
+    public void shareFile(Uri filePath){
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("*/*");
+        sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "FastBackup File");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(filePath));
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, filePath);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
@@ -213,7 +214,7 @@ public class AppsFragment extends Fragment implements AppsFragmentView{
             newAppsFragmentView.onChangeSavedApp();
             mainActivityView.onToast("File Imported");
         }catch(Exception e){
-            mainActivityView.onToast("Something wrong with the selected file, make sure you are selecting the .fbackup file please");
+            mainActivityView.onToast("Something wrong with the selected file, please try agaian");
         }
     }
 
